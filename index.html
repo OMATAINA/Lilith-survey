@@ -1,0 +1,1232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Omataina — Lilith Survey</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --void: #0a0810;
+  --deep: #110e1a;
+  --surface: #1a1528;
+  --card: #211c34;
+  --border: rgba(180,150,90,0.25);
+  --border-hover: rgba(180,150,90,0.6);
+  --gold: #c8a84b;
+  --gold-light: #e8cc80;
+  --crimson: #8b1a2a;
+  --crimson-light: #c4384a;
+  --teal: #1a6a78;
+  --teal-light: #2aa8bc;
+  --text: #e8e0d0;
+  --text-muted: #9a9080;
+  --text-faint: #5a5248;
+  --radius: 4px;
+  --radius-lg: 8px;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'EB Garamond', Georgia, serif;
+  background: var(--void);
+  color: var(--text);
+  min-height: 100vh;
+  line-height: 1.7;
+  font-size: 17px;
+}
+
+/* ── atmospheric background ── */
+.bg-layer {
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background:
+    radial-gradient(ellipse 60% 40% at 20% 10%, rgba(139,26,42,0.12) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 50% at 80% 90%, rgba(26,106,120,0.10) 0%, transparent 60%),
+    radial-gradient(ellipse 80% 60% at 50% 50%, rgba(200,168,75,0.04) 0%, transparent 70%),
+    var(--void);
+}
+
+.grain {
+  position: fixed; inset: 0; z-index: 1; pointer-events: none; opacity: 0.03;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  background-size: 200px;
+}
+
+.container {
+  position: relative; z-index: 2;
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 0 1.5rem 5rem;
+}
+
+/* ── ornamental divider ── */
+.ornament {
+  text-align: center;
+  color: var(--gold);
+  font-size: 13px;
+  letter-spacing: 0.4em;
+  margin: 2rem 0;
+  opacity: 0.7;
+  user-select: none;
+}
+
+.ornament::before, .ornament::after {
+  content: '─────';
+  opacity: 0.4;
+  margin: 0 1rem;
+}
+
+/* ── HEADER: publisher presentation ── */
+.header {
+  padding: 4rem 0 2rem;
+  text-align: center;
+  animation: riseIn 1s ease both;
+}
+
+.pub-sigil {
+  width: 60px; height: 60px;
+  margin: 0 auto 1.5rem;
+  border: 1px solid var(--gold);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--gold);
+  font-family: 'Cinzel', serif;
+  font-size: 18px;
+  letter-spacing: 0.05em;
+  opacity: 0.9;
+  animation: riseIn 1s 0.2s ease both;
+}
+
+.pub-name {
+  font-family: 'Cinzel', serif;
+  font-size: clamp(2rem, 6vw, 3rem);
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  color: var(--gold-light);
+  text-transform: uppercase;
+  margin-bottom: 0.4rem;
+}
+
+.pub-tagline {
+  font-size: 13px;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 2.5rem;
+}
+
+.pub-body {
+  text-align: left;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 2rem 2.25rem;
+  margin-bottom: 0;
+  font-size: 16px;
+  color: var(--text);
+  line-height: 1.8;
+}
+
+.pub-body p { margin-bottom: 1rem; }
+.pub-body p:last-child { margin-bottom: 0; }
+
+.pub-body .highlight {
+  color: var(--gold);
+  font-style: italic;
+}
+
+/* ── BOOK SECTION ── */
+.book-section {
+  margin-top: 0;
+  padding: 2.5rem 2.25rem;
+  background: linear-gradient(135deg, rgba(139,26,42,0.08) 0%, rgba(26,106,120,0.08) 100%);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  animation: riseIn 0.8s 0.4s ease both;
+}
+
+.book-title-label {
+  font-size: 11px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--crimson-light);
+  margin-bottom: 0.5rem;
+}
+
+.book-title {
+  font-family: 'Cinzel', serif;
+  font-size: clamp(1.8rem, 5vw, 2.6rem);
+  font-weight: 400;
+  color: var(--gold-light);
+  line-height: 1.2;
+  margin-bottom: 0.3rem;
+}
+
+.book-author {
+  font-size: 14px;
+  letter-spacing: 0.15em;
+  color: var(--text-muted);
+  margin-bottom: 1.5rem;
+  text-transform: uppercase;
+}
+
+.book-body {
+  font-size: 16px;
+  color: var(--text);
+  line-height: 1.85;
+}
+
+.book-body p { margin-bottom: 1rem; }
+.book-body p:last-child { margin-bottom: 0; }
+
+.book-body .pull {
+  font-family: 'Cinzel', serif;
+  font-size: 1.1rem;
+  color: var(--gold);
+  font-style: italic;
+  border-left: 2px solid var(--crimson);
+  padding-left: 1.25rem;
+  margin: 1.5rem 0;
+  line-height: 1.6;
+}
+
+/* ── PROGRESS ── */
+.progress-wrap {
+  margin: 3rem 0 2rem;
+  animation: riseIn 0.8s 0.3s ease both;
+}
+
+.progress-info {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  color: var(--text-faint);
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.progress-track {
+  height: 1px;
+  background: var(--border);
+}
+
+.progress-fill {
+  height: 1px;
+  background: linear-gradient(90deg, var(--crimson), var(--gold));
+  transition: width 0.5s cubic-bezier(.4,0,.2,1);
+}
+
+/* ── CARD ── */
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 2.25rem;
+  animation: riseIn 0.6s ease both;
+}
+
+/* ── STEP ── */
+.step { display: none; }
+.step.active { display: block; }
+
+.step-tag {
+  font-size: 10px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 0.75rem;
+  opacity: 0.8;
+}
+
+.question {
+  font-family: 'Cinzel', serif;
+  font-size: clamp(1.15rem, 3vw, 1.5rem);
+  font-weight: 400;
+  color: var(--gold-light);
+  line-height: 1.35;
+  margin-bottom: 0.5rem;
+}
+
+.subq {
+  font-size: 14px;
+  color: var(--text-muted);
+  margin-bottom: 1.5rem;
+  font-style: italic;
+  line-height: 1.6;
+}
+
+.multi-hint {
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  color: var(--text-faint);
+  text-transform: uppercase;
+  margin-bottom: 1rem;
+}
+
+/* ── OPTIONS ── */
+.options { display: flex; flex-direction: column; gap: 8px; }
+
+.opt {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 13px 16px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: all 0.18s ease;
+  background: rgba(255,255,255,0.02);
+}
+
+.opt:hover { border-color: var(--border-hover); background: rgba(200,168,75,0.05); }
+
+.opt.selected {
+  border-color: var(--gold);
+  background: rgba(200,168,75,0.08);
+  box-shadow: inset 2px 0 0 var(--gold);
+}
+
+.opt-label { font-size: 15px; color: var(--text); }
+.opt-sub { font-size: 12px; color: var(--text-muted); margin-top: 2px; font-style: italic; }
+
+/* ── CHIPS ── */
+.chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 0.5rem; }
+
+.chip {
+  padding: 7px 15px;
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  cursor: pointer;
+  font-size: 14px;
+  font-family: 'EB Garamond', serif;
+  color: var(--text-muted);
+  background: transparent;
+  transition: all 0.15s ease;
+  letter-spacing: 0.03em;
+}
+
+.chip:hover { border-color: var(--gold); color: var(--gold); }
+
+.chip.selected {
+  background: rgba(200,168,75,0.12);
+  border-color: var(--gold);
+  color: var(--gold-light);
+}
+
+/* ── SLIDER ── */
+.slider-section { margin: 0.5rem 0 1.5rem; }
+
+.slider-val {
+  font-family: 'Cinzel', serif;
+  font-size: 2rem;
+  color: var(--gold);
+  margin-bottom: 0.4rem;
+  letter-spacing: 0.05em;
+}
+
+input[type=range] {
+  -webkit-appearance: none;
+  width: 100%; height: 2px;
+  background: var(--border);
+  outline: none; margin: 0.4rem 0;
+}
+
+input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 16px; height: 16px;
+  border-radius: 50%;
+  background: var(--gold);
+  cursor: pointer;
+  border: 2px solid var(--void);
+  box-shadow: 0 0 0 1px var(--gold);
+  transition: transform 0.15s;
+}
+
+input[type=range]::-webkit-slider-thumb:hover { transform: scale(1.2); }
+
+.slider-labels {
+  display: flex; justify-content: space-between;
+  font-size: 11px; color: var(--text-faint);
+  letter-spacing: 0.08em; text-transform: uppercase;
+  margin-top: 4px;
+}
+
+/* ── DIVIDER ── */
+.divider {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 1.5rem 0;
+}
+
+/* ── TEXT INPUT ── */
+.text-input {
+  width: 100%;
+  padding: 11px 14px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  font-size: 15px;
+  font-family: 'EB Garamond', serif;
+  background: rgba(255,255,255,0.03);
+  color: var(--text);
+  outline: none;
+  transition: border-color 0.15s;
+  resize: vertical;
+}
+
+.text-input:focus { border-color: var(--gold); }
+.text-input::placeholder { color: var(--text-faint); font-style: italic; }
+
+/* ── MOODBOARD GRID ── */
+.moodboard-note {
+  font-size: 13px;
+  color: var(--text-muted);
+  font-style: italic;
+  line-height: 1.7;
+  margin-bottom: 1.25rem;
+  padding: 1rem 1.25rem;
+  border-left: 2px solid var(--crimson);
+  background: rgba(139,26,42,0.06);
+  border-radius: 0 var(--radius) var(--radius) 0;
+}
+
+.mood-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 10px;
+}
+
+.mood-card {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  background: var(--surface);
+  position: relative;
+}
+
+.mood-card:hover {
+  border-color: var(--border-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+}
+
+.mood-card.selected {
+  border-color: var(--gold);
+  box-shadow: 0 0 0 1px var(--gold), 0 6px 20px rgba(200,168,75,0.2);
+}
+
+.mood-card.selected::after {
+  content: '✦';
+  position: absolute;
+  top: 8px; right: 8px;
+  color: var(--gold);
+  font-size: 14px;
+  text-shadow: 0 0 6px rgba(200,168,75,0.8);
+}
+
+.mood-img-wrap {
+  width: 100%;
+  height: 130px;
+  overflow: hidden;
+  background: var(--deep);
+}
+
+.mood-img-wrap img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.3s ease;
+  filter: brightness(0.88);
+}
+
+.mood-card:hover .mood-img-wrap img { transform: scale(1.04); filter: brightness(1); }
+.mood-card.selected .mood-img-wrap img { filter: brightness(1); }
+
+.mood-info {
+  padding: 8px 10px 10px;
+  background: linear-gradient(180deg, var(--surface) 0%, var(--deep) 100%);
+}
+
+.mood-artist {
+  font-size: 13px;
+  color: var(--gold);
+  font-family: 'Cinzel', serif;
+  font-weight: 400;
+  line-height: 1.3;
+}
+
+.mood-note {
+  font-size: 11px;
+  color: var(--text-faint);
+  font-style: italic;
+  margin-top: 2px;
+  line-height: 1.4;
+}
+
+/* ── NAV ── */
+.nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 2rem;
+  gap: 10px;
+}
+
+.btn {
+  padding: 10px 24px;
+  border-radius: var(--radius);
+  font-size: 14px;
+  font-family: 'Cinzel', serif;
+  letter-spacing: 0.1em;
+  cursor: pointer;
+  transition: all 0.18s ease;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text-muted);
+  text-transform: uppercase;
+}
+
+.btn:hover { border-color: var(--border-hover); color: var(--text); }
+
+.btn-primary {
+  border-color: var(--gold);
+  color: var(--gold);
+  background: rgba(200,168,75,0.06);
+}
+
+.btn-primary:hover {
+  background: rgba(200,168,75,0.15);
+  color: var(--gold-light);
+  box-shadow: 0 0 12px rgba(200,168,75,0.2);
+}
+
+.btn:disabled { opacity: 0.3; cursor: not-allowed; }
+
+/* ── THANKS ── */
+.thankyou { text-align: center; padding: 1rem 0; }
+
+.thanks-sigil {
+  font-family: 'Cinzel', serif;
+  font-size: 2.5rem;
+  color: var(--gold);
+  margin-bottom: 1.25rem;
+  display: block;
+  animation: glow 2s ease infinite alternate;
+}
+
+@keyframes glow {
+  from { text-shadow: 0 0 8px rgba(200,168,75,0.3); }
+  to { text-shadow: 0 0 20px rgba(200,168,75,0.7); }
+}
+
+.thankyou h2 {
+  font-family: 'Cinzel', serif;
+  font-size: 1.6rem;
+  font-weight: 400;
+  color: var(--gold-light);
+  margin-bottom: 0.5rem;
+}
+
+.thankyou p { font-size: 15px; color: var(--text-muted); margin-bottom: 1.5rem; font-style: italic; }
+
+.summary-box {
+  background: var(--deep);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.2rem 1.4rem;
+  text-align: left;
+  font-size: 13px;
+  color: var(--text-muted);
+  max-height: 260px;
+  overflow-y: auto;
+  margin-bottom: 1rem;
+}
+
+.summary-row { margin-bottom: 6px; line-height: 1.5; }
+.summary-row strong { color: var(--gold); font-family: 'Cinzel', serif; font-size: 12px; letter-spacing: 0.05em; }
+.sdot { display: inline-block; width: 4px; height: 4px; border-radius: 50%; background: var(--crimson-light); margin-right: 8px; vertical-align: middle; }
+
+/* ── EMAIL STEP ── */
+.email-row { display: flex; gap: 10px; flex-wrap: wrap; }
+.email-row .text-input { flex: 1; min-width: 200px; }
+
+/* ── TOAST ── */
+.toast {
+  position: fixed;
+  bottom: 2rem; left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  background: var(--card);
+  border: 1px solid var(--gold);
+  color: var(--gold);
+  padding: 10px 22px;
+  border-radius: var(--radius);
+  font-size: 13px;
+  font-family: 'Cinzel', serif;
+  letter-spacing: 0.08em;
+  opacity: 0;
+  transition: all 0.3s ease;
+  z-index: 999;
+  pointer-events: none;
+}
+.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+/* ── FOOTER ── */
+.footer {
+  text-align: center;
+  font-size: 11px;
+  color: var(--text-faint);
+  margin-top: 2rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+/* ── ANIMATIONS ── */
+@keyframes riseIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 480px) {
+  .container { padding: 0 1rem 4rem; }
+  .card, .pub-body, .book-section { padding: 1.5rem; }
+  .mood-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); }
+}
+
+/* ── PRESENTATION STEPS ── */
+.pres-step { display: none; }
+.pres-step.active { display: block; }
+
+.pres-body {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 2.25rem;
+}
+
+.pres-title {
+  font-family: 'Cinzel', serif;
+  font-size: clamp(1.5rem, 4vw, 2rem);
+  font-weight: 400;
+  color: var(--gold-light);
+  line-height: 1.3;
+  margin-bottom: 0.4rem;
+}
+
+.pres-sub {
+  font-size: 12px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+  margin-bottom: 1.5rem;
+}
+
+.pres-text {
+  font-size: 16px;
+  color: var(--text);
+  line-height: 1.85;
+}
+
+.pres-text p { margin-bottom: 1rem; }
+.pres-text p:last-child { margin-bottom: 0; }
+.pres-text .hl { color: var(--gold); }
+
+/* ── RATING ── */
+.rating-wrap {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin: 1rem 0;
+}
+
+.rating-btn {
+  width: 44px; height: 44px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: transparent;
+  color: var(--text-muted);
+  font-family: 'Cinzel', serif;
+  font-size: 15px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  display: flex; align-items: center; justify-content: center;
+}
+
+.rating-btn:hover { border-color: var(--gold); color: var(--gold); }
+.rating-btn.selected { background: rgba(200,168,75,0.15); border-color: var(--gold); color: var(--gold-light); }
+
+</style>
+</head>
+<body>
+
+<div class="bg-layer"></div>
+<div class="grain"></div>
+<div class="toast" id="toast"></div>
+
+<div class="container">
+
+  <!-- PROGRESS (shared) -->
+  <div class="progress-wrap" style="padding-top:3rem;">
+    <div class="progress-info">
+      <span id="prog-label">Introduction</span>
+      <span id="prog-pct"></span>
+    </div>
+    <div class="progress-track"><div class="progress-fill" id="prog" style="width:0%"></div></div>
+  </div>
+
+  <!-- ══ PRESENTATION CARD ══ -->
+  <div id="pres-card">
+
+    <!-- PRES 1: Omataina -->
+    <div class="pres-step active" id="p1">
+      <div class="pres-body">
+        <div class="pres-title">Omataina</div>
+        <div class="pres-sub">Our publishing house</div>
+        <div class="pres-text">
+          <p><span class="hl">OMATAINA.</span> Compuesto por el sustantivo quenya <em>óma</em>, 'palabra, discurso', y el adjetivo <em>taina</em>, 'alargado, extendido', que juntos simbolizan una asamblea o una comunidad como lugares en los que la palabra se "alarga", se comparte; pero también simboliza al libro como mecanismo para "extender" la "palabra" a través del espacio y del tiempo. Este es el nombre que hemos adoptado para nuestra editorial: un grupo de amigos con habilidades distintas, entusiastas de la literatura y de las artes plásticas que se han reunido para comenzar un proyecto editorial común.</p>
+          <p>J. R. R. Tolkien has been a fundamental influence on the development of our literary and aesthetic sensibility, and so this publishing house is founded as a celebration of that unavoidable fantastic heritage. We are a community of the word, and like grandfather Tolkien, we want the protagonists of this adventure to be the ordinary folk, those debut artists who step out for the first time from the comfort of their home county and set off into this harsh world of commercial struggle. This community was founded to accompany our halflings on that journey.</p>
+          <p>But, just as Frodo and Bilbo did when they set out on the road, we want to know whether we have everything we need for our adventure to succeed. That is why we are asking you for about five minutes of your time to answer a survey about the first editorial project of our fantasy imprint, <span class="hl">The Hidden Tower</span>.</p>
+        </div>
+        <div class="nav" style="margin-top:1.75rem;"><span></span><button class="btn btn-primary" onclick="nextPres()">Continue</button></div>
+      </div>
+    </div>
+
+    <!-- PRES 2: Lilith -->
+    <div class="pres-step" id="p2">
+      <div class="pres-body">
+        <div class="pres-title">Lilith</div>
+        <div class="pres-sub">George MacDonald · first editorial project</div>
+        <div class="pres-text">
+          <p>We want to begin our editorial adventure by publishing one of the most important works of fantasy by George MacDonald: <em>Lilith</em>. Without giving too much away, it is the story of Lilith's redemption. Regarded in certain versions of Genesis as the first wife of Adam, she is undoubtedly a character who has been invested in many tales and interpretations with the attributes of Milton's Lucifer: rebellion, nonconformism and a desire for creative power. She has been read in many ways, both admiringly and critically, but her prominence within Christian mythology cannot be denied.</p>
+          <p>MacDonald's work is narrated from the perspective of an ordinary man, Vane, who accidentally enters Lilith's world through a mirror. Across a series of chapters we will accompany him on his path of self-discovery and of coming to understand that world. All of this takes place in a story in which George MacDonald shows us, physically and tangibly, the corrupting power of pride over the world (with its barren, jagged, twisted landscapes full of irregular creatures and merciless characters), but also the transforming power of virtue.</p>
+          <p>This is the story with which we want to begin our editorial adventure at Omataina. This will not be a standard edition. We are interested in showing MacDonald's imaginings visually, and so we want to publish a graphic novel adaptation in which the world George MacDonald envisioned can be appreciated in images. If this project interests you, please help us by answering the questionnaire below.</p>
+        </div>
+        <div class="nav" style="margin-top:1.75rem;">
+          <button class="btn" onclick="backPres()">Back</button>
+          <button class="btn btn-primary" onclick="startSurvey()">Start the survey</button>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /pres-card -->
+
+  <!-- ══ SURVEY CARD ══ -->
+  <div class="card" id="survey-card" style="display:none;">
+
+    <!-- S1: frecuencia -->
+    <div class="step active" id="s1">
+      <div class="step-tag">About you</div>
+      <div class="question">How often do you read graphic novels?</div>
+      <div class="options">
+        <div class="opt" onclick="pick(this,'freq','Several times a month')"><div><div class="opt-label">Several times a month</div><div class="opt-sub">It is part of my regular reading diet</div></div></div>
+        <div class="opt" onclick="pick(this,'freq','About once a month')"><div><div class="opt-label">About once a month</div></div></div>
+        <div class="opt" onclick="pick(this,'freq','Every few months')"><div><div class="opt-label">Every few months</div></div></div>
+        <div class="opt" onclick="pick(this,'freq','Rarely or new to this')"><div><div class="opt-label">Rarely or new to this</div></div></div>
+      </div>
+      <div class="nav"><span></span><button class="btn btn-primary" onclick="next()" id="n1" disabled>Next</button></div>
+    </div>
+
+    <!-- S2: conocimiento -->
+    <div class="step" id="s2">
+      <div class="step-tag">The work</div>
+      <div class="question">Had you heard of <em>Lilith</em> by George MacDonald before reading this page?</div>
+      <div class="options">
+        <div class="opt" onclick="pick(this,'conocimiento','I knew it well, I have already read it')"><div><div class="opt-label">I knew it well, I have already read it</div></div></div>
+        <div class="opt" onclick="pick(this,'conocimiento','I had heard of it, but never read it')"><div><div class="opt-label">I had heard of it, but never read it</div></div></div>
+        <div class="opt" onclick="pick(this,'conocimiento','I knew MacDonald but not this work')"><div><div class="opt-label">I knew MacDonald, but not this work specifically</div></div></div>
+        <div class="opt" onclick="pick(this,'conocimiento','Complete discovery, I knew nothing about it')"><div><div class="opt-label">Complete discovery, I knew nothing about it</div></div></div>
+      </div>
+      <div class="nav"><button class="btn" onclick="back()">Back</button><button class="btn btn-primary" onclick="next()" id="n2" disabled>Next</button></div>
+    </div>
+
+    <!-- S3: interés -->
+    <div class="step" id="s3">
+      <div class="step-tag">Interest</div>
+      <div class="question">After reading the introduction, how interested are you in this graphic novel?</div>
+      <div class="options">
+        <div class="opt" onclick="pick(this,'interes','Very much, exactly what I am looking for')"><div><div class="opt-label">Very much, exactly what I am looking for</div></div></div>
+        <div class="opt" onclick="pick(this,'interes','Quite a lot, it catches my attention')"><div><div class="opt-label">Quite a lot, it catches my attention</div></div></div>
+        <div class="opt" onclick="pick(this,'interes','Somewhat, it would depend a lot on the final result')"><div><div class="opt-label">Somewhat, it would depend a lot on the final result</div></div></div>
+        <div class="opt" onclick="pick(this,'interes','Not much, not my kind of reading')"><div><div class="opt-label">Not much, not my kind of reading</div></div></div>
+      </div>
+      <div class="nav"><button class="btn" onclick="back()">Back</button><button class="btn btn-primary" onclick="next()" id="n3" disabled>Next</button></div>
+    </div>
+
+    <!-- S4: extensión -->
+    <div class="step" id="s4">
+      <div class="step-tag">Length</div>
+      <div class="question">What length do you think is appropriate in most cases for adapting literary works like <em>Lilith</em> and similar books?</div>
+      <div class="options">
+        <div class="opt" onclick="pick(this,'ext','Short single volume, fits in an afternoon, 80-120 pages')"><div><div class="opt-label">Short single volume, fits in an afternoon</div><div class="opt-sub">80–120 pages</div></div></div>
+        <div class="opt" onclick="pick(this,'ext','Extended single volume, 180-250 pages')"><div><div class="opt-label">Extended single volume</div><div class="opt-sub">180–250 pages</div></div></div>
+        <div class="opt" onclick="pick(this,'ext','Two volumes, 100 pages each')"><div><div class="opt-label">Two volumes, 100 pages each</div></div></div>
+      </div>
+      <div class="nav"><button class="btn" onclick="back()">Back</button><button class="btn btn-primary" onclick="next()" id="n4" disabled>Next</button></div>
+    </div>
+
+    <!-- S5: formato -->
+    <div class="step" id="s5">
+      <div class="step-tag">Format</div>
+      <div class="question">What format do you usually read or prefer to read graphic novels in?</div>
+      <div class="multi-hint">Select all that apply</div>
+      <div class="chips" id="fmt-chips">
+        <div class="chip" onclick="toggleChip(this,'fmt','Paper, hardcover')">Paper, hardcover</div>
+        <div class="chip" onclick="toggleChip(this,'fmt','Paper, paperback')">Paper, paperback</div>
+        <div class="chip" onclick="toggleChip(this,'fmt','Special edition with extras')">Special edition with extras</div>
+        <div class="chip" onclick="toggleChip(this,'fmt','Digital, PDF or epub')">Digital, PDF or epub</div>
+        <div class="chip" onclick="toggleChip(this,'fmt','Does not matter')">Does not matter to me</div>
+      </div>
+      <div class="nav"><button class="btn" onclick="back()">Back</button><button class="btn btn-primary" onclick="next()" id="n5" disabled>Next</button></div>
+    </div>
+
+    <!-- S6: tamaño -->
+    <div class="step" id="s6">
+      <div class="step-tag">Size</div>
+      <div class="question">What size do you prefer for the graphic novels you read?</div>
+      <div class="options">
+        <div class="opt" onclick="pick(this,'size','Large, I want to see the art at full size')"><div><div class="opt-label">Large, I want to see the art at full size</div></div></div>
+        <div class="opt" onclick="pick(this,'size','Standard, European album format')"><div><div class="opt-label">Standard, European album format</div></div></div>
+        <div class="opt" onclick="pick(this,'size','Pocket size, fits in any bag')"><div><div class="opt-label">Pocket size, fits in any bag</div></div></div>
+        <div class="opt" onclick="pick(this,'size','Does not matter')"><div><div class="opt-label">Does not matter to me</div></div></div>
+      </div>
+      <div class="nav"><button class="btn" onclick="back()">Back</button><button class="btn btn-primary" onclick="next()" id="n6" disabled>Next</button></div>
+    </div>
+
+    <!-- S7: precio -->
+    <div class="step" id="s7">
+      <div class="step-tag">Price</div>
+      <div class="question">How much would you pay for a quality edition of <em>Lilith</em>?</div>
+      <div class="subq">Print edition</div>
+      <div class="slider-section">
+        <div class="slider-val" id="precio-val">$20</div>
+        <input type="range" min="10" max="50" value="20" step="1" oninput="updateSlider(this,'precio-val','$'+this.value,'precio_papel')">
+        <div class="slider-labels"><span>$10</span><span>$50</span></div>
+      </div>
+      <div class="divider"></div>
+      <div class="subq" style="margin-bottom:0.5rem;">Digital edition</div>
+      <div class="slider-section">
+        <div class="slider-val" id="precio-digital-val">$8</div>
+        <input type="range" min="3" max="25" value="8" step="1" oninput="updateSlider(this,'precio-digital-val','$'+this.value,'precio_digital')">
+        <div class="slider-labels"><span>$3</span><span>$25</span></div>
+      </div>
+      <div class="nav"><button class="btn" onclick="back()">Back</button><button class="btn btn-primary" onclick="next()">Next</button></div>
+    </div>
+
+    <!-- S8: moodboard -->
+    <div class="step" id="s8">
+      <div class="step-tag">Art and visual style</div>
+      <div class="question">What styles would you like to see in this graphic novel?</div>
+      <div class="moodboard-note">
+        When planning this edition, the editorial team put together a moodboard of works whose styles (level of detail in characters and backgrounds, colour palettes, luminosity, shadows, line types, degree of realism, etc.) we believe best suit the work. We would like to know your opinion. Without giving anything away, we believe there are four types of setting throughout the novel, each of which should be illustrated in a distinct style: one everyday setting (Victorian Gothic: mansions, Oxford, England), one macabre or what Todorov called the "uncanny" (unusual creatures, dark forests, barren landscapes, spectres, blood, rot, corruption), one bucolic and faerie (similar to what we associate with the fantasy of the hobbit world), and one cosmically transcendental (spatial, mystical, timeless, yet archaic).
+        <br><br>Select all that speak to you.
+      </div>
+
+      <div class="mood-grid" id="mood-grid">
+
+        <div class="mood-card" onclick="toggleMood(this,'mood','Kevin Nowlan')">
+          <div class="mood-img-wrap" data-artist="Kevin Nowlan">
+            <!-- IMAGEN: Kevin Nowlan -->
+            <img src="" alt="Kevin Nowlan" style="display:none" onerror="this.style.display='none'">
+            <div class="mood-placeholder">Kevin Nowlan</div>
+          </div>
+          <div class="mood-info">
+            <div class="mood-artist">Kevin Nowlan</div>
+            <div class="mood-note">Clear line noir, dramatic, deep blues</div>
+          </div>
+        </div>
+
+        <div class="mood-card" onclick="toggleMood(this,'mood','Richard Doyle')">
+          <div class="mood-img-wrap" data-artist="Richard Doyle">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/27/Richard_Doyle_-_In_Fairyland%2C_1870_-_Google_Art_Project.jpg/300px-Richard_Doyle_-_In_Fairyland%2C_1870_-_Google_Art_Project.jpg" alt="Richard Doyle" onerror="this.src='';this.style.display='none';this.nextElementSibling.style.display='flex'">
+            <div class="mood-placeholder" style="display:none">Richard Doyle †</div>
+          </div>
+          <div class="mood-info">
+            <div class="mood-artist">Richard Doyle †</div>
+            <div class="mood-note">Victorian fairy illustration, watercolour</div>
+          </div>
+        </div>
+
+        <div class="mood-card" onclick="toggleMood(this,'mood','John Anster Fitzgerald')">
+          <div class="mood-img-wrap" data-artist="John Anster Fitzgerald">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/John_Anster_Fitzgerald_-_The_Fairy%27s_Funeral.jpg/300px-John_Anster_Fitzgerald_-_The_Fairy%27s_Funeral.jpg" alt="John Anster Fitzgerald" onerror="this.src='';this.style.display='none';this.nextElementSibling.style.display='flex'">
+            <div class="mood-placeholder" style="display:none">J.A. Fitzgerald †</div>
+          </div>
+          <div class="mood-info">
+            <div class="mood-artist">John Anster Fitzgerald †</div>
+            <div class="mood-note">Dense fairy painting, organic jewel colours</div>
+          </div>
+        </div>
+
+        <div class="mood-card" onclick="toggleMood(this,'mood','William Blake')">
+          <div class="mood-img-wrap" data-artist="William Blake">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/50/Europe_a_Prophecy_copy_K_object_1_Frontispiece.jpg/220px-Europe_a_Prophecy_copy_K_object_1_Frontispiece.jpg" alt="William Blake" onerror="this.src='';this.style.display='none';this.nextElementSibling.style.display='flex'">
+            <div class="mood-placeholder" style="display:none">William Blake †</div>
+          </div>
+          <div class="mood-info">
+            <div class="mood-artist">William Blake †</div>
+            <div class="mood-note">Visionary expressionism, illuminated engraving</div>
+          </div>
+        </div>
+
+        <div class="mood-card" onclick="toggleMood(this,'mood','Goya')">
+          <div class="mood-img-wrap" data-artist="Goya">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Francisco_de_Goya%2C_Saturno_devorando_a_su_hijo_%281819-1823%29.jpg/220px-Francisco_de_Goya%2C_Saturno_devorando_a_su_hijo_%281819-1823%29.jpg" alt="Goya" onerror="this.src='';this.style.display='none';this.nextElementSibling.style.display='flex'">
+            <div class="mood-placeholder" style="display:none">Goya †</div>
+          </div>
+          <div class="mood-info">
+            <div class="mood-artist">Goya †</div>
+            <div class="mood-note">Dark expressionism, ochres and blacks</div>
+          </div>
+        </div>
+
+        <div class="mood-card" onclick="toggleMood(this,'mood','Zara Alfonso')">
+          <div class="mood-img-wrap" data-artist="Zara Alfonso">
+            <!-- IMAGEN: Zara Alfonso -->
+            <img src="" alt="Zara Alfonso" style="display:none">
+            <div class="mood-placeholder">Zara Alfonso</div>
+          </div>
+          <div class="mood-info">
+            <div class="mood-artist">Zara Alfonso</div>
+            <div class="mood-note">Realistic fantasy digital art, MTG style</div>
+          </div>
+        </div>
+
+        <div class="mood-card" onclick="toggleMood(this,'mood','Marta Nael')">
+          <div class="mood-img-wrap" data-artist="Marta Nael">
+            <!-- IMAGEN: Marta Nael -->
+            <img src="" alt="Marta Nael" style="display:none">
+            <div class="mood-placeholder">Marta Nael</div>
+          </div>
+          <div class="mood-info">
+            <div class="mood-artist">Marta Nael</div>
+            <div class="mood-note">Luminous cosmic digital, crimson and teal</div>
+          </div>
+        </div>
+
+        <div class="mood-card" onclick="toggleMood(this,'mood','Tommy Patterson')">
+          <div class="mood-img-wrap" data-artist="Tommy Patterson">
+            <!-- IMAGEN: Tommy Patterson -->
+            <img src="" alt="Tommy Patterson" style="display:none">
+            <div class="mood-placeholder">Tommy Patterson</div>
+          </div>
+          <div class="mood-info">
+            <div class="mood-artist">Tommy Patterson</div>
+            <div class="mood-note">Detailed realistic comics, golds and browns</div>
+          </div>
+        </div>
+
+        <div class="mood-card" onclick="toggleMood(this,'mood','wolfythewitch')">
+          <div class="mood-img-wrap" data-artist="wolfythewitch">
+            <!-- IMAGEN: @wolfythewitch -->
+            <img src="" alt="wolfythewitch" style="display:none">
+            <div class="mood-placeholder">@wolfythewitch</div>
+          </div>
+          <div class="mood-info">
+            <div class="mood-artist">@wolfythewitch</div>
+            <div class="mood-note">Expressive stylised, sketch with colour</div>
+          </div>
+        </div>
+
+        <div class="mood-card" onclick="toggleMood(this,'mood','_lady_moira_')">
+          <div class="mood-img-wrap" data-artist="_lady_moira_">
+            <!-- IMAGEN: @_lady_moira_ -->
+            <img src="" alt="_lady_moira_" style="display:none">
+            <div class="mood-placeholder">@_lady_moira_</div>
+          </div>
+          <div class="mood-info">
+            <div class="mood-artist">@_lady_moira_</div>
+            <div class="mood-note">Detailed line, modern engraving, black and white</div>
+          </div>
+        </div>
+
+        <div class="mood-card" onclick="toggleMood(this,'mood','Mike Mignola')">
+          <div class="mood-img-wrap" data-artist="Mike Mignola">
+            <!-- IMAGEN: Mike Mignola -->
+            <img src="" alt="Mike Mignola" style="display:none">
+            <div class="mood-placeholder">Mike Mignola</div>
+          </div>
+          <div class="mood-info">
+            <div class="mood-artist">Mike Mignola</div>
+            <div class="mood-note">Expressionist geometric, reds and strong shadows</div>
+          </div>
+        </div>
+
+        <div class="mood-card" onclick="toggleMood(this,'mood','mary_dimary')">
+          <div class="mood-img-wrap" data-artist="mary_dimary">
+            <!-- IMAGEN: @mary_dimary -->
+            <img src="" alt="mary_dimary" style="display:none">
+            <div class="mood-placeholder">@mary_dimary</div>
+          </div>
+          <div class="mood-info">
+            <div class="mood-artist">@mary_dimary</div>
+            <div class="mood-note">Digital Art Nouveau, blues and golds</div>
+          </div>
+        </div>
+
+        <div class="mood-card" onclick="toggleMood(this,'mood','kalisamiii')">
+          <div class="mood-img-wrap" data-artist="kalisamiii">
+            <!-- IMAGEN: @kalisamiii -->
+            <img src="" alt="kalisamiii" style="display:none">
+            <div class="mood-placeholder">@kalisamiii</div>
+          </div>
+          <div class="mood-info">
+            <div class="mood-artist">@kalisamiii</div>
+            <div class="mood-note">Stylised manga with Art Nouveau influence</div>
+          </div>
+        </div>
+
+        <div class="mood-card" onclick="toggleMood(this,'mood','Arte medieval manuscrito')">
+          <div class="mood-img-wrap" data-artist="Arte medieval manuscrito">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7c/Bestiary%2C_British_Library_Royal_12_C_XIX%2C_f.6_detail.jpg/300px-Bestiary%2C_British_Library_Royal_12_C_XIX%2C_f.6_detail.jpg" alt="Arte medieval" onerror="this.src='';this.style.display='none';this.nextElementSibling.style.display='flex'">
+            <div class="mood-placeholder" style="display:none">Arte medieval †</div>
+          </div>
+          <div class="mood-info">
+            <div class="mood-artist">Medieval manuscript art †</div>
+            <div class="mood-note">Bestiaries, engravings, earthy colours</div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="nav"><button class="btn" onclick="back()">Back</button><button class="btn btn-primary" onclick="next()" id="n8" disabled>Next</button></div>
+    </div>
+
+    <!-- S9: opinión libre -->
+    <div class="step" id="s9">
+      <div class="step-tag">Your voice</div>
+      <div class="question">Anything else you would like to tell us?</div>
+      <div class="subq">Expectations, style ideas not seen in the moodboard, what would make you definitely buy or walk away from this project. Everything counts.</div>
+      <textarea class="text-input" id="open-text" rows="4" placeholder="Write freely here... (optional)"></textarea>
+      <div class="nav"><button class="btn" onclick="back()">Back</button><button class="btn btn-primary" onclick="next()">Next</button></div>
+    </div>
+
+    <!-- S10: recomendación -->
+    <div class="step" id="s10">
+      <div class="step-tag">Rating</div>
+      <div class="question">Based on everything described about our project, on a scale of 1 to 10, how likely would you be to recommend this graphic novel?</div>
+      <div class="rating-wrap" id="rating-wrap">
+        <button class="rating-btn" onclick="pickRating(this,1)">1</button>
+        <button class="rating-btn" onclick="pickRating(this,2)">2</button>
+        <button class="rating-btn" onclick="pickRating(this,3)">3</button>
+        <button class="rating-btn" onclick="pickRating(this,4)">4</button>
+        <button class="rating-btn" onclick="pickRating(this,5)">5</button>
+        <button class="rating-btn" onclick="pickRating(this,6)">6</button>
+        <button class="rating-btn" onclick="pickRating(this,7)">7</button>
+        <button class="rating-btn" onclick="pickRating(this,8)">8</button>
+        <button class="rating-btn" onclick="pickRating(this,9)">9</button>
+        <button class="rating-btn" onclick="pickRating(this,10)">10</button>
+      </div>
+      <div class="nav"><button class="btn" onclick="back()">Back</button><button class="btn btn-primary" onclick="next()" id="n10" disabled>Next</button></div>
+    </div>
+
+    <!-- S11: email -->
+    <div class="step" id="s11">
+      <div class="step-tag">Stay in the loop</div>
+      <div class="question">Would you like us to let you know when there are updates about <em>Lilith</em>?</div>
+      <div class="subq">Leave your email and we will notify you about progress, work-in-progress art, pre-orders and launch. No spam. No aggressive frequency. Only when there is something worth sharing.</div>
+      <div class="email-row">
+        <input type="email" class="text-input" id="email-input" placeholder="tu@correo.com">
+      </div>
+      <div style="margin-top:0.6rem;font-size:12px;color:var(--text-faint);font-style:italic;">Completely optional. You can submit without it.</div>
+      <div class="nav">
+        <button class="btn" onclick="back()">Back</button>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end;">
+          <button class="btn" onclick="submitSurvey()" style="font-size:12px;">Send without email</button>
+          <button class="btn btn-primary" onclick="submitSurvey()">Send survey</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- THANKS -->
+    <div class="step" id="sthanks">
+      <div class="thankyou">
+        <span class="thanks-sigil">✦</span>
+        <h2>Thank you for your time</h2>
+        <p>Your voice is part of the story we are building.</p>
+        <div class="summary-box" id="summary-box"></div>
+        <button class="btn btn-primary" onclick="copySummary()" style="margin-top:0.5rem;">Copy my answers</button>
+      </div>
+    </div>
+
+  </div><!-- /survey-card -->
+
+  <div class="footer" style="margin-top:2rem;">
+    Omataina Editorial · <em>Lilith</em> Survey · Data used solely for editorial planning
+  </div>
+
+</div><!-- /container -->
+
+<script>
+  const answers = { precio_papel: '20 €', precio_digital: '8 €' };
+  let current = 1;
+  const total = 11;
+  let presStep = 1;
+
+  const labels = {
+    freq: 'Reading frequency',
+    conocimiento: 'Prior knowledge of the work',
+    interes: 'Interest in the project',
+    ext: 'Preferred length',
+    fmt: 'Format',
+    size: 'Physical size',
+    precio_papel: 'Print price',
+    precio_digital: 'Digital price',
+    mood: 'Moodboard styles',
+    comentario: 'Open comment',
+    recomendacion: 'Recommendation (1-10)',
+    email: 'Email'
+  };
+
+  /* ── presentation navigation ── */
+  function nextPres() {
+    document.getElementById('p' + presStep).classList.remove('active');
+    presStep++;
+    document.getElementById('p' + presStep).classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function backPres() {
+    document.getElementById('p' + presStep).classList.remove('active');
+    presStep--;
+    document.getElementById('p' + presStep).classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function startSurvey() {
+    document.getElementById('pres-card').style.display = 'none';
+    document.getElementById('survey-card').style.display = 'block';
+    updateProgress();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  /* ── progress ── */
+  function updateProgress() {
+    const pct = Math.round((current / total) * 100);
+    document.getElementById('prog').style.width = pct + '%';
+    document.getElementById('prog-label').textContent = 'Question ' + current + ' of ' + total;
+    document.getElementById('prog-pct').textContent = pct + '%';
+  }
+
+  function showStep(n) {
+    document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+    const el = document.getElementById('s' + n) || document.getElementById('sthanks');
+    if (el) el.classList.add('active');
+    current = typeof n === 'number' ? n : current;
+    updateProgress();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  /* ── interactions ── */
+  function pick(el, key, val) {
+    el.closest('.options').querySelectorAll('.opt').forEach(o => o.classList.remove('selected'));
+    el.classList.add('selected');
+    answers[key] = [val];
+    const nBtn = document.getElementById('n' + current);
+    if (nBtn) nBtn.disabled = false;
+  }
+
+  function toggleChip(el, key, val) {
+    el.classList.toggle('selected');
+    if (!answers[key]) answers[key] = [];
+    if (el.classList.contains('selected')) answers[key].push(val);
+    else answers[key] = answers[key].filter(v => v !== val);
+    const nBtn = document.getElementById('n' + current);
+    if (nBtn) nBtn.disabled = answers[key].length === 0;
+  }
+
+  function toggleMood(el, key, val) {
+    el.classList.toggle('selected');
+    if (!answers[key]) answers[key] = [];
+    if (el.classList.contains('selected')) answers[key].push(val);
+    else answers[key] = answers[key].filter(v => v !== val);
+    const nBtn = document.getElementById('n' + current);
+    if (nBtn) nBtn.disabled = answers[key].length === 0;
+  }
+
+  function pickRating(el, val) {
+    document.querySelectorAll('.rating-btn').forEach(b => b.classList.remove('selected'));
+    el.classList.add('selected');
+    answers['recomendacion'] = val;
+    const nBtn = document.getElementById('n' + current);
+    if (nBtn) nBtn.disabled = false;
+  }
+
+  function updateSlider(input, outId, label, key) {
+    document.getElementById(outId).textContent = label;
+    answers[key] = label;
+  }
+
+  function next() { if (current < total) showStep(current + 1); }
+  function back() { if (current > 1) showStep(current - 1); }
+
+  /* ── submit ── */
+  async function submitSurvey() {
+    const email = document.getElementById('email-input').value.trim();
+    if (email) answers['email'] = email;
+    const comment = document.getElementById('open-text').value.trim();
+    if (comment) answers['comentario'] = comment;
+
+    document.querySelectorAll('#s11 .btn').forEach(b => { b.disabled = true; b.textContent = 'Sending...'; });
+
+    const formData = new FormData();
+    for (const [k, v] of Object.entries(answers)) {
+      if (!v || (Array.isArray(v) && v.length === 0)) continue;
+      formData.append(labels[k] || k, Array.isArray(v) ? v.join(', ') : v);
+    }
+
+    try {
+      const res = await fetch('https://formspree.io/f/xjgjgvdw', {
+        method: 'POST', body: formData, headers: { 'Accept': 'application/json' }
+      });
+      if (!res.ok) throw new Error();
+    } catch (e) {
+      showToast('Send error, answers saved locally');
+    }
+
+    document.getElementById('prog').style.width = '100%';
+    document.getElementById('prog-label').textContent = 'Completed';
+    document.getElementById('prog-pct').textContent = '100%';
+    document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+    document.getElementById('sthanks').classList.add('active');
+    buildSummary();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function buildSummary() {
+    let html = '';
+    for (const [k, v] of Object.entries(answers)) {
+      if (!v || (Array.isArray(v) && v.length === 0)) continue;
+      const display = Array.isArray(v) ? v.join(', ') : v;
+      html += '<div class="summary-row"><span class="sdot"></span><strong>' + (labels[k] || k) + ':</strong> ' + display + '</div>';
+    }
+    document.getElementById('summary-box').innerHTML = html || '<em>Sin datos.</em>';
+  }
+
+  function copySummary() {
+    let text = 'RESPUESTAS — ENCUESTA LILITH, OMATAINA\n\n';
+    for (const [k, v] of Object.entries(answers)) {
+      if (!v || (Array.isArray(v) && v.length === 0)) continue;
+      text += (labels[k] || k) + ': ' + (Array.isArray(v) ? v.join(', ') : v) + '\n';
+    }
+    navigator.clipboard.writeText(text).then(() => showToast('Copied to clipboard'));
+  }
+
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2500);
+  }
+
+  /* ── placeholder styles ── */
+  const styleEl = document.createElement('style');
+  styleEl.textContent = '.mood-placeholder { width:100%; height:100%; display:flex; align-items:center; justify-content:center; font-family:"Cinzel",serif; font-size:12px; color:var(--text-faint); text-align:center; padding:8px; background:var(--deep); }';
+  document.head.appendChild(styleEl);
+</script>
+</body>
+</html>
