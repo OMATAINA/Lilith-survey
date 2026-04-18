@@ -958,16 +958,16 @@ input[type=range]::-webkit-slider-thumb:hover { transform: scale(1.2); }
       <div class="question">¿Cuánto pagarías por una edición de calidad de <em>Lilith</em>?</div>
       <div class="subq">Edición en papel</div>
       <div class="slider-section">
-        <div class="slider-val" id="precio-val">20 USD</div>
-        <input type="range" min="10" max="50" value="20" step="1" oninput="updateSlider(this,'precio-val',this.value+' USD','precio_papel')">
-        <div class="slider-labels"><span>10 USD</span><span>50 USD</span></div>
+        <div class="slider-val" id="precio-val">20 $</div>
+        <input type="range" min="10" max="50" value="20" step="1" oninput="updateSlider(this,'precio-val',this.value+' $','precio_papel')">
+        <div class="slider-labels"><span>10 $</span><span>50 $</span></div>
       </div>
       <div class="divider"></div>
       <div class="subq" style="margin-bottom:0.5rem;">Edición digital</div>
       <div class="slider-section">
-        <div class="slider-val" id="precio-digital-val">8 USD</div>
-        <input type="range" min="3" max="25" value="8" step="1" oninput="updateSlider(this,'precio-digital-val',this.value+' USD','precio_digital')">
-        <div class="slider-labels"><span>3 USD</span><span>25 USD</span></div>
+        <div class="slider-val" id="precio-digital-val">8 $</div>
+        <input type="range" min="3" max="25" value="8" step="1" oninput="updateSlider(this,'precio-digital-val',this.value+' $','precio_digital')">
+        <div class="slider-labels"><span>3 $</span><span>25 $</span></div>
       </div>
       <div class="nav"><button class="btn" onclick="back()">Atrás</button><button class="btn btn-primary" onclick="next()">Siguiente</button></div>
     </div>
@@ -1061,7 +1061,7 @@ input[type=range]::-webkit-slider-thumb:hover { transform: scale(1.2); }
 </div><!-- /container -->
 
 <script>
-  const answers = { precio_papel: '20 USD', precio_digital: '8 USD' };
+  const answers = { precio_papel: '20 $', precio_digital: '8 $' };
   let current = 1;
   const total = 11;
   let presStep = 1;
