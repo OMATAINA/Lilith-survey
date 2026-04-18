@@ -660,6 +660,93 @@ input[type=range]::-webkit-slider-thumb:hover { transform: scale(1.2); }
 .rating-btn:hover { border-color: var(--gold); color: var(--gold); }
 .rating-btn.selected { background: rgba(200,168,75,0.15); border-color: var(--gold); color: var(--gold-light); }
 
+
+/* ── MOODWALL ── */
+.moodwall-section { margin-top: 1.5rem; }
+
+.moodwall-label {
+  font-size: 10px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--gold);
+  opacity: 0.7;
+  margin-bottom: 1rem;
+}
+
+.moodwall { display: flex; flex-direction: column; gap: 1.25rem; }
+
+.moodwall-group { }
+
+.moodwall-group-title {
+  font-family: 'Cinzel', serif;
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  margin-bottom: 0.6rem;
+  border-left: 2px solid var(--crimson);
+  padding-left: 0.75rem;
+}
+
+.moodwall-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 6px;
+}
+
+.moodwall-item {
+  position: relative;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: var(--deep);
+  aspect-ratio: 4/3;
+}
+
+.moodwall-img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  display: block;
+  filter: brightness(0.85) saturate(0.9);
+  transition: filter 0.2s ease;
+}
+
+.moodwall-item:hover .moodwall-img { filter: brightness(1) saturate(1.05); }
+
+.moodwall-placeholder {
+  width: 100%; height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Cinzel', serif;
+  font-size: 11px;
+  color: var(--text-faint);
+  text-align: center;
+  padding: 8px;
+  background: var(--deep);
+  border: 1px dashed rgba(180,150,90,0.15);
+}
+
+.moodwall-item::after {
+  content: attr(data-caption);
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  padding: 4px 6px;
+  font-size: 10px;
+  font-family: 'Cinzel', serif;
+  color: var(--gold-light);
+  background: linear-gradient(transparent, rgba(10,8,16,0.85));
+  letter-spacing: 0.05em;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.moodwall-item:hover::after { opacity: 1; }
+
+@media (max-width: 480px) {
+  .moodwall-row { grid-template-columns: repeat(2, 1fr); }
+}
+
 </style>
 </head>
 <body>
@@ -704,7 +791,88 @@ input[type=range]::-webkit-slider-thumb:hover { transform: scale(1.2); }
         <div class="pres-text">
           <p>Queremos comenzar nuestra aventura editorial editando una de las obras de fantasía más importantes de George MacDonald, <em>Lilith</em>. Sin arruinar el contenido del libro, se trata de la historia de redención de Lilith. Considerada por algunas versiones del Génesis como la primera esposa de Adán, se trata, sin duda, de un personaje que ha sido revestido en muchos relatos e interpretaciones con los atributos del Lucifer de Milton: rebeldía, inconformismo y deseo de poder creador. De ella se han hecho muchas lecturas, encomiosas y censuradoras; pero no se puede negar su preminencia dentro de la mitología cristiana.</p>
           <p>La obra de MacDonald es contada desde la perspectiva de un hombre común, Vane, que por accidente entra al mundo de Lilith a través de un espejo. Durante una serie de capítulos lo acompañaremos en su camino de autodescubrimiento y de conocimiento de aquel mundo. Todo ello en una historia en la que George MacDonald nos muestra física y tangiblemente el poder corruptor de la soberbia sobre el mundo (con sus parajes yermos y escarpados, retorcidos y llenos de criaturas de formas irregulares y de personajes inmisericordes), pero también del poder transformador de la virtud.</p>
-          <p>Esta es la historia con la que queremos comenzar nuestra aventura editorial en Omataina. No se trata de una edición al uso; nos interesa mostrar visualmente las cavilaciones de MacDonald, por ello queremos lanzar una novela gráfica de esta obra, en la que se pueda apreciar visualmente el mundo que George MacDonald imaginó. Si te interesa este proyecto, ayúdanos contestando el siguiente cuestionario.</p>
+          <p>Esta es la historia con la que queremos comenzar nuestra aventura editorial en Omataina. No se trata de una edición al uso; nos interesa mostrar visualmente las cavilaciones de MacDonald, por ello queremos lanzar una novela gráfica de esta obra, en la que se pueda apreciar visualmente el mundo que George MacDonald imaginó. Elaboramos un moodboard con aquellas obras en las que nos queremos influenciar para las ilustraciones; sin arruinar la trama, creemos que la obra tiene cuatro escenarios y tonos distintos: <span class="hl">gótico victoriano</span> (Sidney Paget con sus ilustraciones de Sherlock Holmes), <span class="hl">bucólico féerico</span> (Richard Doyle, John Anster Fitzgerald, John Bauer), <span class="hl">expresionista-esperpéntico</span> (Mike Mignola con su Hellboy, Goya), y <span class="hl">cósmico primordial</span> (arte MTG, William Blake).</p>
+          <div class="moodwall-section">
+            <div class="moodwall-label">Moodboard de referencia</div>
+            <div class="moodwall" id="pres-moodwall">
+
+              <div class="moodwall-group">
+                <div class="moodwall-group-title">Gótico victoriano</div>
+                <div class="moodwall-row">
+                  <div class="moodwall-item" data-caption="Sidney Paget">
+                    <!-- IMAGEN: Sidney Paget — reemplaza src="" con la ruta de tu imagen -->
+                    <img src="" alt="Sidney Paget" class="moodwall-img" style="display:none">
+                    <div class="moodwall-placeholder">Sidney Paget</div>
+                  </div>
+                  <div class="moodwall-item" data-caption="Sidney Paget (2)">
+                    <!-- IMAGEN: Sidney Paget 2 — reemplaza src="" con la ruta de tu imagen -->
+                    <img src="" alt="Sidney Paget 2" class="moodwall-img" style="display:none">
+                    <div class="moodwall-placeholder">Sidney Paget</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="moodwall-group">
+                <div class="moodwall-group-title">Bucólico féerico</div>
+                <div class="moodwall-row">
+                  <div class="moodwall-item" data-caption="Richard Doyle †">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/27/Richard_Doyle_-_In_Fairyland%2C_1870_-_Google_Art_Project.jpg/400px-Richard_Doyle_-_In_Fairyland%2C_1870_-_Google_Art_Project.jpg" alt="Richard Doyle" class="moodwall-img" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+                    <div class="moodwall-placeholder" style="display:none">Richard Doyle †</div>
+                  </div>
+                  <div class="moodwall-item" data-caption="John Anster Fitzgerald †">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/John_Anster_Fitzgerald_-_The_Fairy%27s_Funeral.jpg/400px-John_Anster_Fitzgerald_-_The_Fairy%27s_Funeral.jpg" alt="John Anster Fitzgerald" class="moodwall-img" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+                    <div class="moodwall-placeholder" style="display:none">J.A. Fitzgerald †</div>
+                  </div>
+                  <div class="moodwall-item" data-caption="John Bauer †">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4d/John_Bauer_1915.jpg/300px-John_Bauer_1915.jpg" alt="John Bauer" class="moodwall-img" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+                    <div class="moodwall-placeholder" style="display:none">John Bauer †</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="moodwall-group">
+                <div class="moodwall-group-title">Expresionista-esperpéntico</div>
+                <div class="moodwall-row">
+                  <div class="moodwall-item" data-caption="Mike Mignola">
+                    <!-- IMAGEN: Mike Mignola — reemplaza src="" con la ruta de tu imagen -->
+                    <img src="" alt="Mike Mignola" class="moodwall-img" style="display:none">
+                    <div class="moodwall-placeholder">Mike Mignola</div>
+                  </div>
+                  <div class="moodwall-item" data-caption="Mike Mignola (2)">
+                    <!-- IMAGEN: Mike Mignola 2 — reemplaza src="" con la ruta de tu imagen -->
+                    <img src="" alt="Mike Mignola 2" class="moodwall-img" style="display:none">
+                    <div class="moodwall-placeholder">Mike Mignola</div>
+                  </div>
+                  <div class="moodwall-item" data-caption="Goya †">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Francisco_de_Goya%2C_Saturno_devorando_a_su_hijo_%281819-1823%29.jpg/300px-Francisco_de_Goya%2C_Saturno_devorando_a_su_hijo_%281819-1823%29.jpg" alt="Goya" class="moodwall-img" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+                    <div class="moodwall-placeholder" style="display:none">Goya †</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="moodwall-group">
+                <div class="moodwall-group-title">Cósmico primordial</div>
+                <div class="moodwall-row">
+                  <div class="moodwall-item" data-caption="William Blake †">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/50/Europe_a_Prophecy_copy_K_object_1_Frontispiece.jpg/300px-Europe_a_Prophecy_copy_K_object_1_Frontispiece.jpg" alt="William Blake" class="moodwall-img" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+                    <div class="moodwall-placeholder" style="display:none">William Blake †</div>
+                  </div>
+                  <div class="moodwall-item" data-caption="Arte MTG">
+                    <!-- IMAGEN: Arte MTG — reemplaza src="" con la ruta de tu imagen -->
+                    <img src="" alt="Arte MTG" class="moodwall-img" style="display:none">
+                    <div class="moodwall-placeholder">Arte MTG</div>
+                  </div>
+                  <div class="moodwall-item" data-caption="Arte MTG (2)">
+                    <!-- IMAGEN: Arte MTG 2 — reemplaza src="" con la ruta de tu imagen -->
+                    <img src="" alt="Arte MTG 2" class="moodwall-img" style="display:none">
+                    <div class="moodwall-placeholder">Arte MTG</div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+          <p style="margin-top:1.5rem;">Si te interesa este proyecto, ayúdanos contestando el siguiente cuestionario.</p>
         </div>
         <div class="nav" style="margin-top:1.75rem;">
           <button class="btn" onclick="backPres()">Atrás</button>
@@ -817,186 +985,30 @@ input[type=range]::-webkit-slider-thumb:hover { transform: scale(1.2); }
       <div class="nav"><button class="btn" onclick="back()">Atrás</button><button class="btn btn-primary" onclick="next()">Siguiente</button></div>
     </div>
 
-    <!-- S8: moodboard -->
+    <!-- S8: estilo artístico -->
     <div class="step" id="s8">
       <div class="step-tag">Arte y estilo visual</div>
-      <div class="question">¿Qué estilos te gustaría ver en esta novela gráfica?</div>
-      <div class="moodboard-note">
-        Cuando planeamos esta edición, el equipo editorial elaboró un moodboard con obras cuyos estilos (nivel de detalle de personajes y fondos, paletas de colores, luminosidad, sombras, tipos de línea, grado de realismo, etc.) creemos que se adecúan mejor a la obra, y nos gustaría saber tu opinión. Sin arruinar nada, creemos que hay cuatro tipos de escenarios en toda la novela y cada uno debería ser ilustrado siguiendo un estilo distinto: uno cotidiano (gótico victoriano: mansiones, Oxford, Inglaterra), uno macabro o lo que Todorov llamaba lo "extraño" (criaturas insólitas, bosques oscuros, parajes yermos, espectros, sangres, podredumbre, corrupción), uno bucólico y féerico (parecido a lo que asociamos con la fantasía del mundo de los hobbits), y uno cósmico trascendental (espacial, místico, atemporal, pero arcaico).
-        <br><br>Selecciona todos los que te llamen.
+      <div class="question">¿Qué tipo de arte crees que encajaría mejor con una obra como <em>Lilith</em>?</div>
+      <div class="subq">Selecciona todas las opciones que consideres adecuadas.</div>
+      <div class="multi-hint">Puedes elegir varias</div>
+      <div class="chips" id="art-chips">
+        <div class="chip" onclick="toggleChip(this,'arte','Arte muy detallado, personajes y fondos elaborados')">Arte muy detallado, personajes y fondos elaborados</div>
+        <div class="chip" onclick="toggleChip(this,'arte','Arte sintético, menos detalle, más expresión')">Arte sintético, menos detalle, más expresión</div>
+        <div class="chip" onclick="toggleChip(this,'arte','Línea limpia y definida, contornos precisos')">Línea limpia y definida, contornos precisos</div>
+        <div class="chip" onclick="toggleChip(this,'arte','Línea irregular, gestual, expresionista')">Línea irregular, gestual, expresionista</div>
+        <div class="chip" onclick="toggleChip(this,'arte','Paleta de color amplia y luminosa')">Paleta de color amplia y luminosa</div>
+        <div class="chip" onclick="toggleChip(this,'arte','Paleta reducida, colores oscuros y contrastados')">Paleta reducida, colores oscuros y contrastados</div>
+        <div class="chip" onclick="toggleChip(this,'arte','Influencia de la pintura clásica o romántica')">Influencia de la pintura clásica o romántica</div>
+        <div class="chip" onclick="toggleChip(this,'arte','Influencia del cómic europeo o americano')">Influencia del cómic europeo o americano</div>
+        <div class="chip" onclick="toggleChip(this,'arte','Estilo digital, influencia del concept art o MTG')">Estilo digital, influencia del concept art o MTG</div>
+        <div class="chip" onclick="toggleChip(this,'arte','Acabado de acuarela o técnica húmeda')">Acabado de acuarela o técnica húmeda</div>
+        <div class="chip" onclick="toggleChip(this,'arte','Grabado o aguatinta, aspecto antiguo')">Grabado o aguatinta, aspecto antiguo</div>
+        <div class="chip" onclick="toggleChip(this,'arte','Cada escenario debería tener un estilo visual distinto')">Cada escenario debería tener un estilo visual distinto</div>
       </div>
-
-      <div class="mood-grid" id="mood-grid">
-
-        <div class="mood-card" onclick="toggleMood(this,'mood','Kevin Nowlan')">
-          <div class="mood-img-wrap" data-artist="Kevin Nowlan">
-            <!-- IMAGEN: Kevin Nowlan -->
-            <img src="" alt="Kevin Nowlan" style="display:none" onerror="this.style.display='none'">
-            <div class="mood-placeholder">Kevin Nowlan</div>
-          </div>
-          <div class="mood-info">
-            <div class="mood-artist">Kevin Nowlan</div>
-            <div class="mood-note">Línea clara noir, dramático, azules profundos</div>
-          </div>
-        </div>
-
-        <div class="mood-card" onclick="toggleMood(this,'mood','Richard Doyle')">
-          <div class="mood-img-wrap" data-artist="Richard Doyle">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/27/Richard_Doyle_-_In_Fairyland%2C_1870_-_Google_Art_Project.jpg/300px-Richard_Doyle_-_In_Fairyland%2C_1870_-_Google_Art_Project.jpg" alt="Richard Doyle" onerror="this.src='';this.style.display='none';this.nextElementSibling.style.display='flex'">
-            <div class="mood-placeholder" style="display:none">Richard Doyle †</div>
-          </div>
-          <div class="mood-info">
-            <div class="mood-artist">Richard Doyle †</div>
-            <div class="mood-note">Ilustración victoriana feérica, acuarela</div>
-          </div>
-        </div>
-
-        <div class="mood-card" onclick="toggleMood(this,'mood','John Anster Fitzgerald')">
-          <div class="mood-img-wrap" data-artist="John Anster Fitzgerald">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/John_Anster_Fitzgerald_-_The_Fairy%27s_Funeral.jpg/300px-John_Anster_Fitzgerald_-_The_Fairy%27s_Funeral.jpg" alt="John Anster Fitzgerald" onerror="this.src='';this.style.display='none';this.nextElementSibling.style.display='flex'">
-            <div class="mood-placeholder" style="display:none">J.A. Fitzgerald †</div>
-          </div>
-          <div class="mood-info">
-            <div class="mood-artist">John Anster Fitzgerald †</div>
-            <div class="mood-note">Pintura feérica densa, colores joya orgánicos</div>
-          </div>
-        </div>
-
-        <div class="mood-card" onclick="toggleMood(this,'mood','William Blake')">
-          <div class="mood-img-wrap" data-artist="William Blake">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/50/Europe_a_Prophecy_copy_K_object_1_Frontispiece.jpg/220px-Europe_a_Prophecy_copy_K_object_1_Frontispiece.jpg" alt="William Blake" onerror="this.src='';this.style.display='none';this.nextElementSibling.style.display='flex'">
-            <div class="mood-placeholder" style="display:none">William Blake †</div>
-          </div>
-          <div class="mood-info">
-            <div class="mood-artist">William Blake †</div>
-            <div class="mood-note">Expresionismo visionario, grabado iluminado</div>
-          </div>
-        </div>
-
-        <div class="mood-card" onclick="toggleMood(this,'mood','Goya')">
-          <div class="mood-img-wrap" data-artist="Goya">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Francisco_de_Goya%2C_Saturno_devorando_a_su_hijo_%281819-1823%29.jpg/220px-Francisco_de_Goya%2C_Saturno_devorando_a_su_hijo_%281819-1823%29.jpg" alt="Goya" onerror="this.src='';this.style.display='none';this.nextElementSibling.style.display='flex'">
-            <div class="mood-placeholder" style="display:none">Goya †</div>
-          </div>
-          <div class="mood-info">
-            <div class="mood-artist">Goya †</div>
-            <div class="mood-note">Expresionismo oscuro, ocres y negros</div>
-          </div>
-        </div>
-
-        <div class="mood-card" onclick="toggleMood(this,'mood','Zara Alfonso')">
-          <div class="mood-img-wrap" data-artist="Zara Alfonso">
-            <!-- IMAGEN: Zara Alfonso -->
-            <img src="" alt="Zara Alfonso" style="display:none">
-            <div class="mood-placeholder">Zara Alfonso</div>
-          </div>
-          <div class="mood-info">
-            <div class="mood-artist">Zara Alfonso</div>
-            <div class="mood-note">Digital realista fantástico, estilo MTG</div>
-          </div>
-        </div>
-
-        <div class="mood-card" onclick="toggleMood(this,'mood','Marta Nael')">
-          <div class="mood-img-wrap" data-artist="Marta Nael">
-            <!-- IMAGEN: Marta Nael -->
-            <img src="" alt="Marta Nael" style="display:none">
-            <div class="mood-placeholder">Marta Nael</div>
-          </div>
-          <div class="mood-info">
-            <div class="mood-artist">Marta Nael</div>
-            <div class="mood-note">Digital luminoso y cósmico, carmesí y turquesa</div>
-          </div>
-        </div>
-
-        <div class="mood-card" onclick="toggleMood(this,'mood','Tommy Patterson')">
-          <div class="mood-img-wrap" data-artist="Tommy Patterson">
-            <!-- IMAGEN: Tommy Patterson -->
-            <img src="" alt="Tommy Patterson" style="display:none">
-            <div class="mood-placeholder">Tommy Patterson</div>
-          </div>
-          <div class="mood-info">
-            <div class="mood-artist">Tommy Patterson</div>
-            <div class="mood-note">Cómic realista detallado, dorados y marrones</div>
-          </div>
-        </div>
-
-        <div class="mood-card" onclick="toggleMood(this,'mood','wolfythewitch')">
-          <div class="mood-img-wrap" data-artist="wolfythewitch">
-            <!-- IMAGEN: @wolfythewitch -->
-            <img src="" alt="wolfythewitch" style="display:none">
-            <div class="mood-placeholder">@wolfythewitch</div>
-          </div>
-          <div class="mood-info">
-            <div class="mood-artist">@wolfythewitch</div>
-            <div class="mood-note">Estilizado expresivo, boceto con color</div>
-          </div>
-        </div>
-
-        <div class="mood-card" onclick="toggleMood(this,'mood','_lady_moira_')">
-          <div class="mood-img-wrap" data-artist="_lady_moira_">
-            <!-- IMAGEN: @_lady_moira_ -->
-            <img src="" alt="_lady_moira_" style="display:none">
-            <div class="mood-placeholder">@_lady_moira_</div>
-          </div>
-          <div class="mood-info">
-            <div class="mood-artist">@_lady_moira_</div>
-            <div class="mood-note">Línea detallada, grabado moderno, blanco y negro</div>
-          </div>
-        </div>
-
-        <div class="mood-card" onclick="toggleMood(this,'mood','Mike Mignola')">
-          <div class="mood-img-wrap" data-artist="Mike Mignola">
-            <!-- IMAGEN: Mike Mignola -->
-            <img src="" alt="Mike Mignola" style="display:none">
-            <div class="mood-placeholder">Mike Mignola</div>
-          </div>
-          <div class="mood-info">
-            <div class="mood-artist">Mike Mignola</div>
-            <div class="mood-note">Geométrico expresionista, rojos y sombras fuertes</div>
-          </div>
-        </div>
-
-        <div class="mood-card" onclick="toggleMood(this,'mood','mary_dimary')">
-          <div class="mood-img-wrap" data-artist="mary_dimary">
-            <!-- IMAGEN: @mary_dimary -->
-            <img src="" alt="mary_dimary" style="display:none">
-            <div class="mood-placeholder">@mary_dimary</div>
-          </div>
-          <div class="mood-info">
-            <div class="mood-artist">@mary_dimary</div>
-            <div class="mood-note">Art Nouveau digital, azules y dorados</div>
-          </div>
-        </div>
-
-        <div class="mood-card" onclick="toggleMood(this,'mood','kalisamiii')">
-          <div class="mood-img-wrap" data-artist="kalisamiii">
-            <!-- IMAGEN: @kalisamiii -->
-            <img src="" alt="kalisamiii" style="display:none">
-            <div class="mood-placeholder">@kalisamiii</div>
-          </div>
-          <div class="mood-info">
-            <div class="mood-artist">@kalisamiii</div>
-            <div class="mood-note">Manga estilizado con influencia Art Nouveau</div>
-          </div>
-        </div>
-
-        <div class="mood-card" onclick="toggleMood(this,'mood','Arte medieval manuscrito')">
-          <div class="mood-img-wrap" data-artist="Arte medieval manuscrito">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7c/Bestiary%2C_British_Library_Royal_12_C_XIX%2C_f.6_detail.jpg/300px-Bestiary%2C_British_Library_Royal_12_C_XIX%2C_f.6_detail.jpg" alt="Arte medieval" onerror="this.src='';this.style.display='none';this.nextElementSibling.style.display='flex'">
-            <div class="mood-placeholder" style="display:none">Arte medieval †</div>
-          </div>
-          <div class="mood-info">
-            <div class="mood-artist">Arte de manuscritos medievales †</div>
-            <div class="mood-note">Bestiarios, grabados, colores terrosos</div>
-          </div>
-        </div>
-
-      </div>
-
       <div class="nav"><button class="btn" onclick="back()">Atrás</button><button class="btn btn-primary" onclick="next()" id="n8" disabled>Siguiente</button></div>
     </div>
 
-    <!-- S9: opinión libre -->
+    <!-- S9:    <!-- S9: opinión libre -->
     <div class="step" id="s9">
       <div class="step-tag">Tu voz</div>
       <div class="question">¿Algo más que quieras decirnos?</div>
@@ -1076,6 +1088,7 @@ input[type=range]::-webkit-slider-thumb:hover { transform: scale(1.2); }
     size: 'Tamaño físico',
     precio_papel: 'Precio papel',
     precio_digital: 'Precio digital',
+    arte: 'Tipo de arte preferido',
     mood: 'Estilos del moodboard',
     comentario: 'Comentario libre',
     recomendacion: 'Recomendación (1-10)',
